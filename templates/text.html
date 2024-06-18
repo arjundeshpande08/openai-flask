@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Generator</title>
+</head>
+<body>
+    <h1>Text Generator</h1>
+    <form action="{{ url_for('text_generator') }}" method="post">
+        <input type="text" name="prompt" placeholder="Enter your prompt" value="{{ request.form.prompt if request.method == 'POST' else '' }}">
+        <button type="submit">Generate</button>
+    </form>
+    {% if generated_text %}
+        <h2>Generated Text</h2>
+        <p>{{ generated_text }}</p>
+    {% endif %}
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>

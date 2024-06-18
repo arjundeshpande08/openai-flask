@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Generator</title>
+</head>
+<body>
+    <h1>Image Generator</h1>
+    <form action="{{ url_for('image_generator') }}" method="post">
+        <input type="text" name="prompt" placeholder="Enter your prompt" value="{{ request.form.prompt if request.method == 'POST' else '' }}">
+        <button type="submit">Generate</button>
+    </form>
+    {% if image_url %}
+        <h2>Generated Image</h2>
+        <img src="{{ image_url }}" alt="Generated Image">
+    {% endif %}
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>
