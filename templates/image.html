@@ -2,17 +2,69 @@
 <html>
 <head>
     <title>Image Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .image-card {
+            margin: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            background: white;
+            padding: 10px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        form {
+            margin-top: 20px;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: calc(100% - 122px);
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            width: 100px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Image Generator</h1>
     <form action="{{ url_for('image_generator') }}" method="post">
-        <input type="text" name="prompt" placeholder="Enter your prompt" value="{{ request.form.prompt if request.method == 'POST' else '' }}">
+        <input type="text" name="prompt" placeholder="Enter your prompt">
         <button type="submit">Generate</button>
     </form>
-    {% if image_url %}
-        <h2>Generated Image</h2>
-        <img src="{{ image_url }}" alt="Generated Image">
-    {% endif %}
+    <div class="gallery">
+        {% if 'image_history' in session %}
+            {% for item in session['image_history'] %}
+                <div class="image-card">
+                    <h3>{{ item['prompt'] }}</h3>
+                    <img src="{{ item['url'] }}" alt="Generated Image">
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
     <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>

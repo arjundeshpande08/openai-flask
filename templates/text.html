@@ -2,17 +2,73 @@
 <html>
 <head>
     <title>Text Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9; /* Light grey background */
+        }
+        .chat-container {
+            width: 80%;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Soft shadow for chat box */
+            height: 500px;
+            overflow-y: auto; /* Enable scrolling for overflow */
+        }
+        .message {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .prompt {
+            background-color: #e0eaff; /* Light blue for user prompts */
+            text-align: left;
+            margin-left: 10px;
+            width: auto;
+            display: inline-block;
+        }
+        .response {
+            background-color: #d1ffd8; /* Light green for AI responses */
+            text-align: right;
+            margin-right: 10px;
+            width: auto;
+            display: inline-block;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            width: calc(100% - 120px);
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            width: 100px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <h1>Text Generator</h1>
+    <div class="chat-container" id="chat-container">
+        <!-- Chat messages will be appended here -->
+        {% if session.get('chat_history') %}
+            {% for message in session.get('chat_history') %}
+                <div class="message {{ 'prompt' if message['sender'] == 'user' else 'response' }}">
+                    {{ message['text'] }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
     <form action="{{ url_for('text_generator') }}" method="post">
-        <input type="text" name="prompt" placeholder="Enter your prompt" value="{{ request.form.prompt if request.method == 'POST' else '' }}">
-        <button type="submit">Generate</button>
+        <input type="text" name="prompt" placeholder="Enter your prompt">
+        <button type="submit">Send</button>
     </form>
-    {% if generated_text %}
-        <h2>Generated Text</h2>
-        <p>{{ generated_text }}</p>
-    {% endif %}
     <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>
